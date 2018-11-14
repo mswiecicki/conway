@@ -54,4 +54,5 @@ const runGameOfLife = (initialState, generations) => {
 
 module.exports = {
   runGameOfLife,
+  runGeneration,
 };
