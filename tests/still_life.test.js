@@ -8,7 +8,7 @@ test("'Block' pattern does not change between generations", async () => {
 
   const result = runGeneration(block);
 
-  expect(result).toMatchObject(block);
+  expect(result).toEqual(expect.arrayContaining(block));
 });
 
 test("'Beehive' pattern does not change between generations", async () => {
@@ -20,7 +20,7 @@ test("'Beehive' pattern does not change between generations", async () => {
 
   const result = runGeneration(beehive);
 
-  expect(result).toMatchObject(beehive);
+  expect(result).toEqual(expect.arrayContaining(beehive));
 });
 
 test("'Loaf' pattern does not change between generations", async () => {
@@ -33,7 +33,7 @@ test("'Loaf' pattern does not change between generations", async () => {
 
   const result = runGeneration(loaf);
 
-  expect(result).toMatchObject(loaf);
+  expect(result).toEqual(expect.arrayContaining(loaf));
 });
 
 test("'Boat' pattern does not change between generations", async () => {
@@ -45,7 +45,7 @@ test("'Boat' pattern does not change between generations", async () => {
 
   const result = runGeneration(boat);
 
-  expect(result).toMatchObject(boat);
+  expect(result).toEqual(expect.arrayContaining(boat));
 });
 
 test("'Tub' pattern does not change between generations", async () => {
@@ -57,5 +57,5 @@ test("'Tub' pattern does not change between generations", async () => {
 
   const result = runGeneration(tub);
 
-  expect(result).toMatchObject(tub);
+  expect(result).toEqual(expect.arrayContaining(tub));
 });
