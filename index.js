@@ -8,21 +8,21 @@ const {
 
 const generateCoordsMap = prevGen => {
   const coordsMap = {};
-
   prevGen.forEach(cellCoords =>
     appendNeighbours(cellCoords)
       .forEach(coords =>
         incrementValue(coordsMap, encodeCoords(coords))
       )
   );
-
   return coordsMap;
 };
 
 const generateNewborns = coordsMap =>
   Object.entries(coordsMap)
-    .filter(([k, v]) => v === 3)
-    .map(([key]) => decodeCoords(key));
+    .reduce((newborns, [encodedCoords, liveNeighbours]) => {
+      if (liveNeighbours === 3) newborns.push(decodeCoords(encodedCoords));
+      return newborns;
+    }, []);
 
 const determineSurvivors = (liveCells, coordsMap) =>
   liveCells
