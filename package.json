@@ -1,0 +1,22 @@
+{
+  "name": "conway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/4rlekin/conway.git"
+  },
+  "author": "Marek Święcicki 2018",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/4rlekin/conway/issues"
+  },
+  "homepage": "https://github.com/4rlekin/conway#readme",
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
+}
