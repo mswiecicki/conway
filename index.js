@@ -54,4 +54,4 @@ console.dir(gen3);
 console.dir(gen4);
 console.dir(gen5);
 
-
+console.log(`The script uses approximately ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(3)} MB`);
