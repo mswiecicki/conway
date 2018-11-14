@@ -3,7 +3,6 @@ const {
   encodeCoords,
   decodeCoords,
   incrementValue,
-  removeDuplicates,
 } = require('./utils.js');
 
 const generateCoordsMap = prevGen => {
@@ -20,40 +19,35 @@ const generateCoordsMap = prevGen => {
 const generateNewborns = coordsMap =>
   Object.entries(coordsMap)
     .reduce((newborns, [encodedCoords, liveNeighbours]) => {
-      if (liveNeighbours === 3) newborns.push(decodeCoords(encodedCoords));
+      if (liveNeighbours === 3) newborns.add(encodedCoords);
       return newborns;
-    }, []);
+    }, new Set());
 
 const determineSurvivors = (prevGen, coordsMap) =>
   prevGen
     .reduce((survivors, coords) => {
-      const liveNeighbours = coordsMap[encodeCoords(coords)];
-      if (liveNeighbours === 3 || liveNeighbours === 4) survivors.push(coords);
+      const encoded = encodeCoords(coords);
+      if (coordsMap[encoded] === 3 || coordsMap[encoded] === 4) survivors.add(encoded);
       return survivors;
-    }, []);
+    }, new Set());
 
-const removeDuplicateCells = cells =>
-  removeDuplicates(cells.map(encodeCoords)).map(decodeCoords);
+const mergeSets = (s1, s2) => {
+  s2.forEach(value => s1.add(value));
+  return s1;
+};
 
 const runGeneration = prevGen => {
   const coordsMap = generateCoordsMap(prevGen);
   const newborns = generateNewborns(coordsMap);
   const survivors = determineSurvivors(prevGen, coordsMap);
-  return removeDuplicateCells([...newborns, ...survivors]);
+  return Array.from(mergeSets(survivors, newborns)).map(decodeCoords);
 };
 
-const gen0 = [ [2, 1], [2, 2], [2, 3] ];
-const gen1 = runGeneration(gen0);
-const gen2 = runGeneration(gen1);
-const gen3 = runGeneration(gen2);
-const gen4 = runGeneration(gen3);
-const gen5 = runGeneration(gen4);
-
-console.dir(gen0);
-console.dir(gen1);
-console.dir(gen2);
-console.dir(gen3);
-console.dir(gen4);
-console.dir(gen5);
+let generations = 3;
+let currentGen = [ [2, 1], [2, 2], [2, 3] ];
+while (generations--) {
+  currentGen = runGeneration(currentGen);
+}
+console.dir(currentGen);
 
 console.log(`The script uses approximately ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(3)} MB`);
