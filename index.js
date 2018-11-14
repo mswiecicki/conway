@@ -1,30 +1,21 @@
 const {
+  appendNeighbours,
   encodeCoords,
   decodeCoords,
   incrementValue,
-  neighbours,
   removeDuplicates,
 } = require('./utils.js');
 
-const mapLiveCells = prevGen => {
+const generateCoordsMap = prevGen => {
   const coordsMap = {};
-  prevGen
-    .map(encodeCoords)
-    .forEach(coords => {
-      coordsMap[coords] = 1;
-    });
-  return coordsMap;
-};
 
-const mapNeighbours = (liveCells, currentCoordsMap) => {
-  const coordsMap = {...currentCoordsMap};
-  liveCells
-    .map(neighbours)
-    .forEach(neighboursCoords =>
-      neighboursCoords
-        .map(encodeCoords)
-        .forEach(coords => incrementValue(coordsMap, coords))
-    );
+  prevGen.forEach(cellCoords =>
+    appendNeighbours(cellCoords)
+      .forEach(coords =>
+        incrementValue(coordsMap, encodeCoords(coords))
+      )
+  );
+
   return coordsMap;
 };
 
@@ -43,14 +34,13 @@ const removeDuplicateCells = cells =>
   removeDuplicates(cells.map(encodeCoords)).map(decodeCoords);
 
 const runGeneration = prevGen => {
-  const liveCellsCoordsMap = mapLiveCells(prevGen);
-  const completeCoordsMap = mapNeighbours(prevGen, liveCellsCoordsMap);
-  const newborns = generateNewborns(completeCoordsMap);
-  const survivors = determineSurvivors(prevGen, completeCoordsMap);
+  const coordsMap = generateCoordsMap(prevGen);
+  const newborns = generateNewborns(coordsMap);
+  const survivors = determineSurvivors(prevGen, coordsMap);
   return removeDuplicateCells([...newborns, ...survivors]);
 };
 
-const gen0 = [ [1,1], [2, 1], [2, 2], [1, 2] ];
+const gen0 = [ [2, 1], [2, 2], [2, 3] ];
 const gen1 = runGeneration(gen0);
 const gen2 = runGeneration(gen1);
 const gen3 = runGeneration(gen2);
@@ -63,3 +53,5 @@ console.dir(gen2);
 console.dir(gen3);
 console.dir(gen4);
 console.dir(gen5);
+
+
