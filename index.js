@@ -24,11 +24,13 @@ const generateNewborns = coordsMap =>
       return newborns;
     }, []);
 
-const determineSurvivors = (liveCells, coordsMap) =>
-  liveCells
-    .map(encodeCoords)
-    .filter(coords => coordsMap[coords] === 3 || coordsMap[coords] === 4)
-    .map(decodeCoords);
+const determineSurvivors = (prevGen, coordsMap) =>
+  prevGen
+    .reduce((survivors, coords) => {
+      const liveNeighbours = coordsMap[encodeCoords(coords)];
+      if (liveNeighbours === 3 || liveNeighbours === 4) survivors.push(coords);
+      return survivors;
+    }, []);
 
 const removeDuplicateCells = cells =>
   removeDuplicates(cells.map(encodeCoords)).map(decodeCoords);
